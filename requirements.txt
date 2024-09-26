@@ -1,0 +1,8 @@
+streamlit==1.25.0
+python-dotenv==1.0.0
+PyPDF2==3.0.1
+certifi==2023.7.22
+langchain==0.0.308
+faiss-cpu==1.7.4
+openai==0.28.0
+
