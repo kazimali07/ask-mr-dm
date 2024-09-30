@@ -1,6 +1,6 @@
 # Ask Mr. Data Modeler
 
-Ask Mr. Data Modeler is a Streamlit application that allows users to upload PDF documents and interact with them using OpenAI's GPT-3.5-turbo model. The application processes the PDFs, creates a vector store, and enables conversational retrieval of information from the documents.
+Ask Mr. Data Modeler is a Streamlit application that allows users to upload PDF documents and interact with them using OpenAI's GPT model. The application processes the PDFs, creates a vector store, and enables conversational retrieval of information from the documents.
 
 ## Features
 
