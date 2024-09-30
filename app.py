@@ -33,9 +33,6 @@ if not openai_api_key:
 # Set the SSL certificate path
 os.environ['SSL_CERT_FILE'] = certifi.where()
 
-# Set the REQUESTS_CA_BUNDLE environment variable
-os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
-
 # ----------------------------
 # 3. Define Helper Functions
 # ----------------------------
@@ -111,6 +108,11 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
     
+    def initialize_chain():
+        if st.session_state.vector_store and st.session_state.conversation_chain is None:
+            st.session_state.conversation_chain = initialize_conversation_chain(st.session_state.vector_store)
+            st.success("Conversation chain initialized.")
+    
     # ----------------------------
     # 4.1 Load PDFs from Folder
     # ----------------------------
@@ -137,12 +139,7 @@ def main():
         else:
             st.warning(f"Directory `{pdf_docs_path}` does not exist. You can upload PDFs below.")
     
-    # ----------------------------
-    # 4.2 Initialize Conversation Chain
-    # ----------------------------
-    if st.session_state.vector_store and st.session_state.conversation_chain is None:
-        st.session_state.conversation_chain = initialize_conversation_chain(st.session_state.vector_store)
-        st.success("Conversation chain initialized.")
+    initialize_chain()
     
     # ----------------------------
     # 4.3 Chat Interface
@@ -183,11 +180,9 @@ def main():
                     if st.session_state.vector_store:
                         # Merge the new vector store with the existing one
                         st.session_state.vector_store.merge_from(new_vectorstore)
-                        # Update the retriever in the conversation chain
-                        st.session_state.conversation_chain = initialize_conversation_chain(st.session_state.vector_store)
                     else:
                         st.session_state.vector_store = new_vectorstore
-                        st.session_state.conversation_chain = initialize_conversation_chain(st.session_state.vector_store)
+                    initialize_chain()
                     st.success("Uploaded PDFs have been added and processed.")
                 else:
                     st.error("No text extracted from the uploaded PDFs.")
