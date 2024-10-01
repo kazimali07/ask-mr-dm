@@ -3,6 +3,7 @@ import certifi
 import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
+import pickle  # Add this import for saving/loading vector store
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
@@ -36,6 +37,18 @@ os.environ['SSL_CERT_FILE'] = certifi.where()
 # ----------------------------
 # 3. Define Helper Functions
 # ----------------------------
+
+VECTOR_STORE_PATH = "vector_store.pkl"  # Path to save/load the vector store
+
+def save_vectorstore(vectorstore):
+    with open(VECTOR_STORE_PATH, "wb") as f:
+        pickle.dump(vectorstore, f)
+
+def load_vectorstore():
+    if os.path.exists(VECTOR_STORE_PATH):
+        with open(VECTOR_STORE_PATH, "rb") as f:
+            return pickle.load(f)
+    return None
 
 def get_pdf_text(pdf_docs):
     """
@@ -102,7 +115,7 @@ def main():
     
     # Initialize session state variables
     if "vector_store" not in st.session_state:
-        st.session_state.vector_store = None
+        st.session_state.vector_store = load_vectorstore()  # Load vector store if it exists
     if "conversation_chain" not in st.session_state:
         st.session_state.conversation_chain = None
     if "chat_history" not in st.session_state:
@@ -133,6 +146,7 @@ def main():
                 if raw_text:
                     text_chunks = get_text_chunks(raw_text)
                     st.session_state.vector_store = create_vectorstore(text_chunks)
+                    save_vectorstore(st.session_state.vector_store)  # Save the vector store
                     st.success("Vector store created from PDFs.")
                 else:
                     st.error("No text extracted from the provided PDFs.")
@@ -182,6 +196,7 @@ def main():
                         st.session_state.vector_store.merge_from(new_vectorstore)
                     else:
                         st.session_state.vector_store = new_vectorstore
+                    save_vectorstore(st.session_state.vector_store)  # Save the updated vector store
                     initialize_chain()
                     st.success("Uploaded PDFs have been added and processed.")
                 else:
