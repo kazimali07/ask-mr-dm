@@ -1,62 +1,55 @@
 # Ask Mr. Data Modeler
 
-Ask Mr. Data Modeler is a Streamlit application that allows users to upload PDF documents and interact with them using OpenAI's GPT model. The application processes the PDFs, creates a vector store, and enables conversational retrieval of information from the documents.
+## Overview
+"Ask Mr. Data Modeler" is a Streamlit application that allows users to interact with a conversational AI model. The application processes PDF documents to extract text and creates a vector store for efficient retrieval of information. Users can ask questions, and the AI will respond based on the content of the uploaded PDFs.
 
 ## Features
+- Load PDF documents from a specified directory.
+- Extract text from PDF files and split it into manageable chunks.
+- Create a FAISS vector store for efficient text retrieval.
+- Engage in a conversational interface with the AI model.
+- Upload additional PDF documents through the sidebar.
 
-- Upload multiple PDF documents.
-- Extract text from PDFs and split it into manageable chunks.
-- Create a vector store from the text chunks using OpenAI embeddings.
-- Interact with the documents using a conversational interface powered by GPT-3.5-turbo.
-- Maintain conversation history for context-aware responses.
+## Requirements
+- Python 3.x
+- Streamlit
+- PyPDF2
+- Langchain
+- Certifi
+- Dotenv
 
 ## Installation
-
 1. Clone the repository:
-    ```sh
-    git clone https://github.com/yourusername/ask-mr-dm.git
-    cd ask-mr-dm
-    ```
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
 
-2. Create a virtual environment and activate it:
-    ```sh
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-    ```
+2. Install the required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-3. Install the required dependencies:
-    ```sh
-    pip install -r requirements.txt
-    ```
-
-4. Create a `.env` file in the root directory and add your OpenAI API key:
-    ```env
-    OPENAI_API_KEY=your_openai_api_key
-    ```
+3. Create a `.env` file in the root directory and add your OpenAI API key:
+   ```
+   OPENAI_API_KEY=your_api_key_here
+   ```
 
 ## Usage
+1. Run the application:
+   ```bash
+   streamlit run app.py
+   ```
 
-1. Run the Streamlit application:
-    ```sh
-    streamlit run app.py
-    ```
+2. Open your web browser and navigate to `http://localhost:8501`.
 
-2. Open your web browser and go to `http://localhost:8501`.
+3. Upload PDF documents using the sidebar or load them from the specified directory.
 
-3. Upload your PDF documents using the sidebar.
+4. Type your questions in the chat interface and receive responses from the AI model.
 
-4. Type your questions in the chat input and interact with the documents.
-
-## Project Structure
-
-- `app.py`: The main application file.
-- `requirements.txt`: List of dependencies required for the project.
-- `pdf-docs/`: Directory to store PDF documents (ensure this directory exists).
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+## Notes
+- Ensure that the PDF documents are in the correct format for text extraction.
+- The application saves the vector store to a file named `vector_store.pkl` for future use.
 
 ## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
